@@ -49,5 +49,6 @@ jobs:
               "extends": "next/core-web-vitals"
             }' > .eslintrc.json
           fi
-          npx next lint
+          npx eslint . --ext .js,.jsx,.ts,.tsx
+
 
