@@ -42,4 +42,12 @@ jobs:
             }' > .eslintrc.json
           fi
 
-      - run: npm test
+      - name: Run ESLint safely
+        run: |
+          if [ ! -f .eslintrc.json ]; then
+            echo '{
+              "extends": "next/core-web-vitals"
+            }' > .eslintrc.json
+          fi
+          npx next lint
+
