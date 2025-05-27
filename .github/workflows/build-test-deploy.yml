@@ -1,27 +1,42 @@
 name: build-test-deploy
+
 on: push
+
 jobs: 
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: checkout repo code
+      - name: Checkout repo code
         uses: actions/checkout@v3
 
-      - name: use node.js
+      - name: Use Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18.x'
+
       - run: npm install
       - run: npm run build
+
   test:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: checkout repo
+      - name: Checkout repo
         uses: actions/checkout@v3
-      - name: use node.js
+
+      - name: Use Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18.x'
+
       - run: npm install
+
+      - name: Add default ESLint config to avoid prompt
+        run: |
+          if [ ! -f .eslintrc.json ]; then
+            echo '{
+              "extends": "next/core-web-vitals"
+            }' > .eslintrc.json
+          fi
+
       - run: npm test
